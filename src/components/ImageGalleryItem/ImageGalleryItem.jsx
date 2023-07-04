@@ -4,7 +4,14 @@ import css from './ImageGalleryItem.module.css';
 function ImageGalleryItem({ description, smallImage, largeImage, openModal }) {
   return (
     <li className={css.item} onClick={openModal}>
-      <img src={smallImage} alt={description} data-large={largeImage} />
+      <div className={css.thumb}>
+        <img
+          className={css.galleryImg}
+          src={smallImage}
+          alt={description}
+          data-large={largeImage}
+        />
+      </div>
     </li>
   );
 }

@@ -38,7 +38,7 @@ class Searchbar extends Component {
       <header className={css.header}>
         <form className={css.form} onSubmit={this.onSubmitForm}>
           <button className={css.button} type="submit">
-            <FaSearch size={12} />
+            <FaSearch className={css.backgroundButton} size={12} />
           </button>
 
           <input

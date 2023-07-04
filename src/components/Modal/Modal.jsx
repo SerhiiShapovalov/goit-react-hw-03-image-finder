@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { Component } from 'react';
 import { createPortal } from 'react-dom';
 import { BsXLg } from 'react-icons/bs';
+// import * as basicLightbox from 'basiclightbox';
 import css from './Modal.module.css';
 
 const modalRoot = document.querySelector('#modal-root');

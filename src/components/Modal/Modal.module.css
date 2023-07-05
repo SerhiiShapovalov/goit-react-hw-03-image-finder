@@ -1,106 +1,21 @@
-.backdrop {
+.overlay {
   position: fixed;
   top: 0;
   left: 0;
-
   width: 100vw;
   height: 100vh;
-
-  background-color: rgba(43, 43, 43, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 1200;
 }
 
 .modal {
-  position: relative;
-  top: 50%;
+  position: absolute;
+  min-width: 70%;
+  top: 10px;
   left: 50%;
-  transform: translate(-50%, -50%);
-
-  width: 280px;
-  height: auto;
-
-  background-color: #f0f0f0;
-  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75);
-}
-
-@media screen and (min-width: 768px) {
-  .modal {
-    width: 600px;
-  }
-}
-
-@media screen and (min-width: 1440px) {
-  .modal {
-    width: 900px;
-  }
-}
-
-.wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  padding: 5px;
-}
-
-@media screen and (min-width: 768px) {
-  .wrapper {
-    padding: 10px;
-  }
-}
-
-@media screen and (min-width: 1440px) {
-  .wrapper {
-    padding: 30px;
-  }
-}
-
-.title {
-  font-size: 15px;
-  font-weight: 400;
-  text-transform: capitalize;
-}
-
-.button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 30px;
-  height: 30px;
-  padding: 0;
-
-  border: none;
-  border-radius: 50%;
-
-  background-color: #3f51b5;
-  color: #fff;
-
-  cursor: pointer;
-  transition: color 250ms cubic-bezier(0.4, 0, 0.2, 1),
-    background-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.button:hover,
-.button:focus {
-  color: #111111;
-  background-color: #303f9f;
-}
-
-@media screen and (min-width: 768px) {
-  .button {
-    width: 40px;
-    height: 30px;
-  }
-}
-
-.icon {
-  width: 10px;
-  height: 10px;
-}
-
-@media screen and (min-width: 768px) {
-  .icon {
-    width: 12px;
-    height: 12px;
-  }
+  visibility: visible;
+  transform: translate(-50%) scale(1);
 }

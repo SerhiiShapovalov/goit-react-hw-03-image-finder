@@ -1,18 +1,18 @@
 import PropTypes from 'prop-types';
 import { Component } from 'react';
 import { createPortal } from 'react-dom';
-import { BsXLg } from 'react-icons/bs';
 // import * as basicLightbox from 'basiclightbox';
 import css from './Modal.module.css';
 
-const modalRoot = document.querySelector('#modal-root');
+const modalRoot = document.querySelector('#root');
 
-class Modal extends Component {
+export default class Modal extends Component {
   static propTypes = {
-    title: PropTypes.string,
-    onClose: PropTypes.func.isRequired,
-    currentImageUrl: PropTypes.string,
-    currentImageDescription: PropTypes.string,
+    modalData: PropTypes.shape({
+      currentImageUrl: PropTypes.string.isRequired,
+      currentImageDescription: PropTypes.string.isRequired,
+    }),
+    onModalClose: PropTypes.func,
   };
 
   componentDidMount() {
@@ -36,28 +36,15 @@ class Modal extends Component {
   };
 
   render() {
-    const { title, onClose, currentImageUrl, currentImageDescription } =
-      this.props;
+    const { currentImageUrl, currentImageDescription } = this.props;
 
     return createPortal(
-      <div className={css.backdrop} onClick={this.handleClickBackdrop}>
+      <div className={css.overlay} onClick={this.handleClickBackdrop}>
         <div className={css.modal}>
-          <div className={css.wrapper}>
-            {title && <h1 className={css.title}>{title}</h1>}
-            <button className={css.button} type="button" onClick={onClose}>
-              <BsXLg className={css.icon} />
-            </button>
-          </div>
-          <img
-            src={currentImageUrl}
-            alt={currentImageDescription}
-            loading="lazy"
-          />
+          <img src={currentImageUrl} alt={currentImageDescription} />
         </div>
       </div>,
       modalRoot
     );
   }
 }
-
-export default Modal;

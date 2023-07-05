@@ -1,5 +1,4 @@
-const URL =
-  'https://pixabay.com/api/?q=cat&page=1&key=your_key&image_type=photo&orientation=horizontal&per_page=12';
+const URL = 'https://pixabay.com/api/';
 const KEY = '36642088-087cec4977100f32e6b37de02';
 const FILTER = '&image_type=photo&orientation=horizontal&per_page=12';
 

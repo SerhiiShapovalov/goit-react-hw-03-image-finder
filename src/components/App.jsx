@@ -30,6 +30,9 @@ class App extends Component {
 
       fetchImages(query)
         .then(({ hits, totalHits }) => {
+          if (hits.length === 0) {
+            alert(`Oops... there are no images matching your search... `);
+          }
           const imagesArray = hits.map(hit => ({
             id: hit.id,
             description: hit.tags,

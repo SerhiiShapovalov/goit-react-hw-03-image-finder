@@ -14,7 +14,7 @@ class App extends Component {
     page: 1,
     totalImages: 0,
     isLoading: false,
-    images: null,
+    images: [],
     error: null,
     modalData: null,
   };
@@ -38,7 +38,7 @@ class App extends Component {
             largeImage: hit.largeImageURL,
           }));
 
-          this.setState(({ images, imagesOnPage }) => {
+          this.setState(({ images }) => {
             return {
               images: [...images, ...imagesArray],
               totalImages: totalHits,
@@ -64,11 +64,9 @@ class App extends Component {
 
   render() {
     const {
-      images,
-      // imagesOnPage,
+      images,      
       totalImages,
-      isLoading,
-      // showModal,
+      isLoading,      
       // currentImageUrl,
       // currentImageDescription,
       modalData,
@@ -84,7 +82,7 @@ class App extends Component {
 
         {isLoading && <Loader />}
 
-        {!isLoading && images !== totalImages && (
+        {!isLoading && images.length !== totalImages && (
           <Button onNextFetch={this.onNextFetch} />
         )}
 

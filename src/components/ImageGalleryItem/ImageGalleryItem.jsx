@@ -3,7 +3,10 @@ import css from './ImageGalleryItem.module.css';
 
 function ImageGalleryItem({ description, smallImage, largeImage, openModal }) {
   return (
-    <li className={css.item} onClick={openModal}>
+    <li
+      className={css.item}
+      onClick={() => openModal({ largeImage, description })}
+    >
       <div className={css.thumb}>
         <img
           className={css.galleryImg}
@@ -16,8 +19,8 @@ function ImageGalleryItem({ description, smallImage, largeImage, openModal }) {
   );
 }
 
-ImageGalleryItem.prototype = {
-  description: PropTypes.string,
+ImageGalleryItem.prototype.shape = {
+  description: PropTypes.string.isRequired,
   smallImage: PropTypes.string.isRequired,
   largeImage: PropTypes.string.isRequired,
   openModal: PropTypes.func.isRequired,

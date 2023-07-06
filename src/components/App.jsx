@@ -12,26 +12,24 @@ class App extends Component {
   state = {
     query: '',
     page: 1,
-    imagesOnPage: 0,
     totalImages: 0,
     isLoading: false,
-    showModal: false,
     images: null,
     error: null,
-    currentImageUrl: null,
-    currentImageDescription: null,
+    modalData: null,
   };
 
   componentDidUpdate(prevProps, prevState) {
     const { query, page } = this.state;
 
-    if (prevState.query !== query) {
-      this.setState(({ isLoading }) => ({ isLoading: !isLoading }));
+    if (prevState.query !== query || prevState.page !== page) {
+      this.setState({ isLoading: true });
 
-      fetchImages(query)
+      fetchImages(query, page)
         .then(({ hits, totalHits }) => {
-          if (hits.length === 0) {
+          if (!totalHits) {
             alert(`Oops... there are no images matching your search... `);
+            return;
           }
           const imagesArray = hits.map(hit => ({
             id: hit.id,
@@ -40,68 +38,28 @@ class App extends Component {
             largeImage: hit.largeImageURL,
           }));
 
-          return this.setState({
-            page: 1,
-            images: imagesArray,
-            imagesOnPage: imagesArray.length,
-            totalImages: totalHits,
-          });
-        })
-        .catch(error => this.setState({ error }))
-        .finally(() =>
-          this.setState(({ isLoading }) => ({ isLoading: !isLoading }))
-        );
-    }
-
-    if (prevState.page !== page && page !== 1) {
-      this.setState(({ isLoading }) => ({ isLoading: !isLoading }));
-
-      fetchImages(query, page)
-        .then(({ hits }) => {
-          const imagesArray = hits.map(hit => ({
-            id: hit.id,
-            description: hit.tags,
-            smallImage: hit.webformatURL,
-            largeImage: hit.largeImageURL,
-          }));
-
-          return this.setState(({ images, imagesOnPage }) => {
+          this.setState(({ images, imagesOnPage }) => {
             return {
               images: [...images, ...imagesArray],
-              imagesOnPage: imagesOnPage + imagesArray.length,
+              totalImages: totalHits,
             };
           });
         })
         .catch(error => this.setState({ error }))
-        .finally(() =>
-          this.setState(({ isLoading }) => ({ isLoading: !isLoading }))
-        );
+        .finally(() => this.setState({ isLoading: false }));
     }
   }
 
   getSearchRequest = query => {
-    this.setState({ query });
+    this.setState({ query, page: 1, images: [], totalImages: 0 });
   };
 
   onNextFetch = () => {
     this.setState(({ page }) => ({ page: page + 1 }));
   };
 
-  toggleModal = () => {
-    this.setState(({ showModal }) => ({ showModal: !showModal }));
-  };
-
-  openModal = e => {
-    const currentImageUrl = e.target.dataset.large;
-    const currentImageDescription = e.target.alt;
-
-    if (e.target.nodeName === 'IMG') {
-      this.setState(({ showModal }) => ({
-        showModal: !showModal,
-        currentImageUrl: currentImageUrl,
-        currentImageDescription: currentImageDescription,
-      }));
-    }
+  toggleModal = (modalData = null) => {
+    this.setState({ modalData });
   };
 
   render() {
@@ -113,30 +71,28 @@ class App extends Component {
       showModal,
       currentImageUrl,
       currentImageDescription,
+      modalData,
     } = this.state;
-
-    const getSearchRequest = this.getSearchRequest;
-    const onNextFetch = this.onNextFetch;
-    const openModal = this.openModal;
-    const toggleModal = this.toggleModal;
 
     return (
       <>
-        <Searchbar onSubmit={getSearchRequest} />
+        <Searchbar onSubmit={this.getSearchRequest} />
 
-        {images && <ImageGallery images={images} openModal={openModal} />}
+        {images && (
+          <ImageGallery images={images} openModal={this.toggleModal} />
+        )}
 
         {isLoading && <Loader />}
 
-        {imagesOnPage >= 12 && imagesOnPage < totalImages && (
-          <Button onNextFetch={onNextFetch} />
+        {!isLoading && images !== totalImages && (
+          <Button onNextFetch={this.onNextFetch} />
         )}
 
-        {showModal && (
+        {modalData && (
           <Modal
-            onClose={toggleModal}
-            currentImageUrl={currentImageUrl}
-            currentImageDescription={currentImageDescription}
+            onClose={this.toggleModal}
+            currentImageUrl={modalData.largeImage}
+            currentImageDescription={modalData.description}
           />
         )}
 

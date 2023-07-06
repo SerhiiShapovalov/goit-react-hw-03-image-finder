@@ -65,12 +65,12 @@ class App extends Component {
   render() {
     const {
       images,
-      imagesOnPage,
+      // imagesOnPage,
       totalImages,
       isLoading,
-      showModal,
-      currentImageUrl,
-      currentImageDescription,
+      // showModal,
+      // currentImageUrl,
+      // currentImageDescription,
       modalData,
     } = this.state;
 
